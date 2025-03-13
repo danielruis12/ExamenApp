@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBExamenAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agencia">
+          <Key>
+            <PropertyRef Name="AgenciaID" />
+          </Key>
+          <Property Name="AgenciaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PrimerApellido" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SegundoApellido" Type="nvarchar" MaxLength="100" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="100" />
+          <Property Name="FechaNacimiento" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Computador">
+          <Key>
+            <PropertyRef Name="ComputadorID" />
+          </Key>
+          <Property Name="ComputadorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroProcesadores" Type="int" Nullable="false" />
+          <Property Name="MarcaProcesador" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TamanoDiscoDuro" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TamanoMemoria" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Componentes" Type="nvarchar(max)" />
+          <Property Name="TipoComputadorID" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TipoComputador">
+          <Key>
+            <PropertyRef Name="TipoID" />
+          </Key>
+          <Property Name="TipoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreTipo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="VentaID" />
+          </Key>
+          <Property Name="VentaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaVenta" Type="datetime" Nullable="false" />
+          <Property Name="Documento" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ComputadorID" Type="int" Nullable="false" />
+          <Property Name="AgenciaID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Computado__Preci__5070F446">
+          <End Role="TipoComputador" Type="Self.TipoComputador" Multiplicity="1" />
+          <End Role="Computador" Type="Self.Computador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoComputador">
+              <PropertyRef Name="TipoID" />
+            </Principal>
+            <Dependent Role="Computador">
+              <PropertyRef Name="TipoComputadorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__AgenciaID__5535A963">
+          <End Role="Agencia" Type="Self.Agencia" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agencia">
+              <PropertyRef Name="AgenciaID" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="AgenciaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Computado__5441852A">
+          <End Role="Computador" Type="Self.Computador" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Computador">
+              <PropertyRef Name="ComputadorID" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="ComputadorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Documento__534D60F1">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Documento" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Documento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBExamenAppModelStoreContainer">
+          <EntitySet Name="Agencia" EntityType="Self.Agencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Computador" EntityType="Self.Computador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoComputador" EntityType="Self.TipoComputador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Computado__Preci__5070F446" Association="Self.FK__Computado__Preci__5070F446">
+            <End Role="TipoComputador" EntitySet="TipoComputador" />
+            <End Role="Computador" EntitySet="Computador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__AgenciaID__5535A963" Association="Self.FK__Venta__AgenciaID__5535A963">
+            <End Role="Agencia" EntitySet="Agencia" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Computado__5441852A" Association="Self.FK__Venta__Computado__5441852A">
+            <End Role="Computador" EntitySet="Computador" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Documento__534D60F1" Association="Self.FK__Venta__Documento__534D60F1">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBExamenAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agencia">
+          <Key>
+            <PropertyRef Name="AgenciaID" />
+          </Key>
+          <Property Name="AgenciaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__AgenciaID__5535A963" FromRole="Agencia" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SegundoApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__Documento__534D60F1" FromRole="Cliente" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Computador">
+          <Key>
+            <PropertyRef Name="ComputadorID" />
+          </Key>
+          <Property Name="ComputadorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroProcesadores" Type="Int32" Nullable="false" />
+          <Property Name="MarcaProcesador" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TamanoDiscoDuro" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TamanoMemoria" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Componentes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TipoComputadorID" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="TipoComputador" Relationship="Self.FK__Computado__Preci__5070F446" FromRole="Computador" ToRole="TipoComputador" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__Computado__5441852A" FromRole="Computador" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TipoComputador">
+          <Key>
+            <PropertyRef Name="TipoID" />
+          </Key>
+          <Property Name="TipoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Computadors" Relationship="Self.FK__Computado__Preci__5070F446" FromRole="TipoComputador" ToRole="Computador" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="VentaID" />
+          </Key>
+          <Property Name="VentaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaVenta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Documento" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ComputadorID" Type="Int32" Nullable="false" />
+          <Property Name="AgenciaID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Agencia" Relationship="Self.FK__Venta__AgenciaID__5535A963" FromRole="Venta" ToRole="Agencia" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Venta__Documento__534D60F1" FromRole="Venta" ToRole="Cliente" />
+          <NavigationProperty Name="Computador" Relationship="Self.FK__Venta__Computado__5441852A" FromRole="Venta" ToRole="Computador" />
+        </EntityType>
+        <Association Name="FK__Venta__AgenciaID__5535A963">
+          <End Role="Agencia" Type="Self.Agencia" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agencia">
+              <PropertyRef Name="AgenciaID" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="AgenciaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Documento__534D60F1">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Documento" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Documento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Computado__Preci__5070F446">
+          <End Role="TipoComputador" Type="Self.TipoComputador" Multiplicity="1" />
+          <End Role="Computador" Type="Self.Computador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoComputador">
+              <PropertyRef Name="TipoID" />
+            </Principal>
+            <Dependent Role="Computador">
+              <PropertyRef Name="TipoComputadorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Computado__5441852A">
+          <End Role="Computador" Type="Self.Computador" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Computador">
+              <PropertyRef Name="ComputadorID" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="ComputadorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBExamenAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agencias" EntityType="Self.Agencia" />
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Computadors" EntityType="Self.Computador" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TipoComputadors" EntityType="Self.TipoComputador" />
+          <EntitySet Name="Ventas" EntityType="Self.Venta" />
+          <AssociationSet Name="FK__Venta__AgenciaID__5535A963" Association="Self.FK__Venta__AgenciaID__5535A963">
+            <End Role="Agencia" EntitySet="Agencias" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Documento__534D60F1" Association="Self.FK__Venta__Documento__534D60F1">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Computado__Preci__5070F446" Association="Self.FK__Computado__Preci__5070F446">
+            <End Role="TipoComputador" EntitySet="TipoComputadors" />
+            <End Role="Computador" EntitySet="Computadors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Computado__5441852A" Association="Self.FK__Venta__Computado__5441852A">
+            <End Role="Computador" EntitySet="Computadors" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBExamenAppModelStoreContainer" CdmEntityContainer="DBExamenAppEntities">
+          <EntitySetMapping Name="Agencias">
+            <EntityTypeMapping TypeName="DBExamenAppModel.Agencia">
+              <MappingFragment StoreEntitySet="Agencia">
+                <ScalarProperty Name="AgenciaID" ColumnName="AgenciaID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="DBExamenAppModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Computadors">
+            <EntityTypeMapping TypeName="DBExamenAppModel.Computador">
+              <MappingFragment StoreEntitySet="Computador">
+                <ScalarProperty Name="ComputadorID" ColumnName="ComputadorID" />
+                <ScalarProperty Name="NumeroProcesadores" ColumnName="NumeroProcesadores" />
+                <ScalarProperty Name="MarcaProcesador" ColumnName="MarcaProcesador" />
+                <ScalarProperty Name="TamanoDiscoDuro" ColumnName="TamanoDiscoDuro" />
+                <ScalarProperty Name="TamanoMemoria" ColumnName="TamanoMemoria" />
+                <ScalarProperty Name="Componentes" ColumnName="Componentes" />
+                <ScalarProperty Name="TipoComputadorID" ColumnName="TipoComputadorID" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DBExamenAppModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoComputadors">
+            <EntityTypeMapping TypeName="DBExamenAppModel.TipoComputador">
+              <MappingFragment StoreEntitySet="TipoComputador">
+                <ScalarProperty Name="TipoID" ColumnName="TipoID" />
+                <ScalarProperty Name="NombreTipo" ColumnName="NombreTipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ventas">
+            <EntityTypeMapping TypeName="DBExamenAppModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="VentaID" ColumnName="VentaID" />
+                <ScalarProperty Name="FechaVenta" ColumnName="FechaVenta" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="ComputadorID" ColumnName="ComputadorID" />
+                <ScalarProperty Name="AgenciaID" ColumnName="AgenciaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
