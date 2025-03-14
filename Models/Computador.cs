@@ -9,6 +9,7 @@
 
 namespace ExamenApp.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -28,9 +29,11 @@ namespace ExamenApp.Models
         public string Componentes { get; set; }
         public int TipoComputadorID { get; set; }
         public decimal Precio { get; set; }
-    
+
+        [JsonIgnore]
         public virtual TipoComputador TipoComputador { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<Venta> Ventas { get; set; }
     }
 }

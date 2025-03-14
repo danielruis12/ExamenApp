@@ -9,6 +9,7 @@
 
 namespace ExamenApp.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -19,9 +20,12 @@ namespace ExamenApp.Models
         public string Documento { get; set; }
         public int ComputadorID { get; set; }
         public int AgenciaID { get; set; }
-    
+
+        [JsonIgnore]
         public virtual Agencia Agencia { get; set; }
+        [JsonIgnore]
         public virtual Cliente Cliente { get; set; }
+        [JsonIgnore]
         public virtual Computador Computador { get; set; }
     }
 }

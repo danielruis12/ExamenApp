@@ -48,5 +48,29 @@ namespace ExamenApp.Clases
         {
             return dbExamenApp.Clientes.FirstOrDefault(c => c.Documento == Documento);
         }
+        public List<Cliente> ConsultarTodos()
+        {
+            return dbExamenApp.Clientes.OrderBy(c => c.PrimerApellido).ToList();
+        }
+        public string Eliminar()
+        {
+            try
+            {
+                //Antes de eliminar, se debe verificar si el cliente existe
+                Cliente clie = Consultar(cliente.Documento);
+                if (clie == null)
+                {
+                    return "El cliente con el documento ingresado no se encuentra, no puede eliminarse";
+                }
+                //El cliente existe, puede eliminarse. Se elimina el objeto cliente que se busca, no el que se envía como parámetro.
+                dbExamenApp.Clientes.Remove(clie); //Eliminar el objeto cliente de la lista de "Clientes". Todavía no se elimina de la base de datos. Se debe invocar el método SaveChanges().
+                dbExamenApp.SaveChanges(); //Guardar los cambios en la base de datos
+                return "Se eliminó el cliente correctamente";
+            }
+            catch (Exception ex)
+            {
+                return "No se pudo eliminar el cliente: " + ex.Message;
+            }
+        }
     }
 }
